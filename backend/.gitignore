@@ -1,3 +1,5 @@
 .DS_Store
 __pycache__
 settings_dev.py
+myapp/migrations/*.py
+!/myapp/migrations/__init__.py

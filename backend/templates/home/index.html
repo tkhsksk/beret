@@ -1,0 +1,22 @@
+<html>
+	{% include 'parts/head.html' with title='ホーム' %}
+<body>
+	{% include 'parts/header.html' %}
+<p>hello world.</p>
+
+<form action="" method="post">
+	{% csrf_token %}
+	{{form.as_p}}
+	<button type="submit" value="submit">登録</button>
+</form>
+
+{% for user in users %}
+<tr>
+  <td>{{user.id}}</td>
+  <td>{{user.name}}</td>
+  <td><a href="{% url 'user_edit' user.id %}">編集</a></td>
+<tr>
+{% endfor %}
+
+</body>
+</html>
