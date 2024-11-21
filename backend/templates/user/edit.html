@@ -1,14 +1,17 @@
-<html>
-	{% include 'parts/head.html' with title='編集' %}
-<body>
-	{% include 'parts/header.html' %}
-<p>hello world.</p>
+<!DOCTYPE html>
+{% extends "layout/default.html" %}
 
-<form action="" method="post">
-	{% csrf_token %}
+{% block head %}
+{% with title="編集" %}
+{{ block.super }}{% endwith %}{% endblock %}
+
+{% block main %}
+  <p>hello world.</p>
+
+  <form action="" method="post">
+  	{% csrf_token %}
 	{{form.as_p}}
-	<button type="submit" value="submit">登録</button>
-</form>
+  	<button type="submit" value="submit">登録</button>
+  </form>
 
-</body>
-</html>
+{% endblock %}

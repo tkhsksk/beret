@@ -21,7 +21,7 @@ def home_template(request):
 
     # HTMLで読み込むformを定義
     context = {
-        "form": form,
+        'form': form,
         'users': users,
     }
     return render(request, "home/index.html", context)

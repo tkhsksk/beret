@@ -10,4 +10,4 @@ class UserForm(forms.ModelForm):
         model = User
         # フィールドはすべてを利用
         fields = '__all__'
-        ##  nameのみに限定する場合 → fields = ["name"]
+        ##  右でもOK → fields = ["name"]
