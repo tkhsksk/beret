@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% extends "layout/default.html" %}
+
+{% block head %}
+{% with title="検索" %}
+{{ block.super }}{% endwith %}{% endblock %}
+
+{% block main %}
+
+  <form action="" method="get">
+    <input name="query" value="{{ request.GET.query }}" type="text" />
+    <button type="submit">検索する</button>
+  </form>
+
+  {% for user in users %}
+  <tr>
+    <td>{{user.id}}</td>
+    <td>{{user.name}}</td>
+    <td><a href="{% url 'user_edit' user.id %}">編集</a></td>
+  <tr>
+  {% endfor %}
+
+{% endblock %}

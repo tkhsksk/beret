@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% extends "layout/default.html" %}
+
+{% block head %}
+{% with title="ホーム" %}
+{{ block.super }}{% endwith %}{% endblock %}
+
+{% block main %}
+
+	<p>hello world.</p>
+
+	<form action="" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit" value="submit">登録</button>
+	</form>
+
+{% endblock %}

@@ -17,3 +17,9 @@ DATABASES = {
 }
 
 CSRF_TRUSTED_ORIGINS = [ "https://django.ksk318.me" ]
+
+# TailwindCSS settings
+TAILWIND_APP_NAME = 'tailwind_theme'
+INTERNAL_IPS = [
+    'localhost',
+]
