@@ -3,25 +3,10 @@ from beret.forms import UserForm # UserFormをimport
 from beret.models import User
 
 def index(request):
-    # フォームを作成
-    form = UserForm()
     users = User.objects.all()
-
-    # メソッドがPOSTだった場合
-    if request.method == "POST":
-        # POSTデータを取得
-        form = UserForm(request.POST)
-
-        # データが有効か確認
-        if form.is_valid():
-            # 有効であればデータを格納
-            form.save()
-            # beret/urls.pyに設定したnameにリダイレクトする
-            return redirect('home')
 
     # HTMLで読み込むformを定義
     context = {
-        'form': form,
         'users': users,
     }
     return render(request, "user/index.html", context)
@@ -62,7 +47,7 @@ def edit(request, pk):
 
         if form.is_valid():
             form.save()
-            return redirect('user_edit', pk)
+            return redirect('user_index')
 
     # htmlで読み込むformを定義
     context = {"form": form}

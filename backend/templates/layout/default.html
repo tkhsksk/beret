@@ -1,11 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html dir="ltr">
     {% block head %}
       {% include 'parts/head.html' %}
     {% endblock %}
-    <body>
-      {% include 'parts/header.html' %}
-      {% block main %}
+    <body class="antialiased">
+      <div
+        x-data="{ darkMode: false, mobileSidebarOpen: false, activeTab: 'Analytics' }"
+        x-bind:class="{ 'dark': darkMode }"
+      >
+        <!-- Page Container -->
+        <div
+          id="page-container"
+          class="relative mx-auto flex min-h-screen min-w-[320px] flex-col bg-white dark:bg-slate-900 dark:text-slate-100 lg:ms-80"
+        >
+          {% include 'parts/aside.html' %}
+          {% include 'parts/header.html' %}
+
+          <main
+            id="page-content"
+            class="grow bg-slate-100 pt-16 dark:bg-slate-950"
+          >
+          {% block main %}
+          </main>
+        </div>
+      </div>
       
       {% endblock %}
     </body>
