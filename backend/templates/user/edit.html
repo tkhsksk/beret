@@ -10,40 +10,31 @@
   <div
     class="flex flex-col rounded-lg border bg-white md:col-span-3"
     >
-      <form action="" method="post" class="w-full">
-        <div
-          class="flex flex-col items-center justify-between gap-4 border-b border-slate-100 p-5 text-center sm:flex-row sm:text-start"
-        >
-      <div>
-        <h2 class="mb-0.5 font-semibold">ユーザーアカウント管理</h2>
-        <h3 class="text-sm font-medium text-slate-600">
-          All your recent transactions in one place
-        </h3>
-      </div>
-          <div>
-                <a
-                  href="{% url 'user_create' %}"
-                  class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold leading-5 text-slate-800 hover:border-violet-300 hover:text-violet-800 active:border-slate-200"
-                >
-                  新規ユーザー
-                </a>
-            </div>
+    <form action="" method="post" class="w-full" enctype="multipart/form-data">
+      <div
+        class="flex flex-col items-center justify-between gap-4 border-b border-slate-100 p-5 text-center sm:flex-row sm:text-start"
+      >
+        <div>
+          <h2 class="mb-0.5 font-semibold">ユーザーアカウント編集</h2>
+          <h3 class="text-sm font-medium text-slate-600">
+            All your recent transactions in one place
+          </h3>
         </div>
+      </div>
 
-        <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8">
-          <div class="w-full">
-          {% csrf_token %}
-          {% for fm in form %}
-              <div class="mb-3">
-                  <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{fm.label}}</label>
-                  <p>{{fm}} </p>
-              </div>
-          {% endfor %}
+      <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8">
+        <div class="md:w-7/12 w-full">
+        {% csrf_token %}
+        {% include 'forms/text.html' with form=form.name %}
+        {% include 'forms/text_multiple.html' with form1=form.first_name form2=form.last_name label='アカウント氏名' %}
+        {% include 'forms/image.html' with form=form.image content=user.image %}
+        {% include 'forms/text.html' with form=form.password %}
         <button type="submit" value="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-3 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">登録</button>
-      </div>
         </div>
-        </form>
-    </div>
+      </div>
+
+    </form>
+  </div>
 </div>
 
 {% endblock %}

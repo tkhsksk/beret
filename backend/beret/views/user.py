@@ -14,7 +14,6 @@ def index(request):
 def create(request):
     # フォームを作成
     form = UserForm()
-    users = User.objects.all()
 
     # メソッドがPOSTだった場合
     if request.method == "POST":
@@ -31,26 +30,28 @@ def create(request):
     # HTMLで読み込むformを定義
     context = {
         'form': form,
-        'users': users,
     }
     return render(request, "user/create.html", context)
 
 def edit(request, pk):
     # Userモデルからidを元にデータを取得
-    item = User.objects.get(id=pk)
+    user = User.objects.get(id=pk)
     # フォームにデータを格納
-    form = UserForm(instance=item)
+    form = UserForm(instance=user)
 
     if request.method == "POST":
         # postデータを取得
-        form = UserForm(request.POST, instance=item)
+        form = UserForm(request.POST, request.FILES, instance=user)
 
         if form.is_valid():
             form.save()
             return redirect('user_index')
 
     # htmlで読み込むformを定義
-    context = {"form": form}
+    context = {
+        "form": form,
+        "user": user,
+    }
     return render(request, "user/edit.html", context)
 
 def search(request):

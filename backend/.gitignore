@@ -9,3 +9,6 @@ beret/migrations/*.py
 # python manage.py tailwind start
 # ビルドするたびに変更されるので、除外
 tailwind_theme/static/css/dist/styles.css
+
+# アップロードファイルは除外
+upload/*

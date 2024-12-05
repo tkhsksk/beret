@@ -1,0 +1,7 @@
+<div class="mb-3">
+    <label class="font-semibold block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.label }}</label>
+    {% if content %}
+    <img src="/upload/{{content}}" class="w-[270px] h-[270px] object-contain bg-slate-100">
+    {% endif %}
+    <p>{{ form }}</p>
+</div>
