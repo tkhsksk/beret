@@ -20,11 +20,10 @@
             id="page-content"
             class="grow bg-slate-100 pt-16 dark:bg-slate-950"
           >
-          {% block main %}
+          {% block main %}{% endblock %}
           </main>
         </div>
       </div>
-      
-      {% endblock %}
+      {% block extrajs %}{% endblock %}
     </body>
 </html>

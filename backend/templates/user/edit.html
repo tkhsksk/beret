@@ -10,31 +10,61 @@
   <div
     class="flex flex-col rounded-lg border bg-white md:col-span-3"
     >
-    <form action="" method="post" class="w-full" enctype="multipart/form-data">
       <div
         class="flex flex-col items-center justify-between gap-4 border-b border-slate-100 p-5 text-center sm:flex-row sm:text-start"
       >
         <div>
-          <h2 class="mb-0.5 font-semibold">ユーザーアカウント編集</h2>
+          <h2 class="mb-0.5 font-semibold">ユーザーアカウント管理</h2>
           <h3 class="text-sm font-medium text-slate-600">
             All your recent transactions in one place
           </h3>
         </div>
-      </div>
-
-      <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8">
-        <div class="md:w-7/12 w-full">
-        {% csrf_token %}
-        {% include 'forms/text.html' with form=form.name %}
-        {% include 'forms/text_multiple.html' with form1=form.first_name form2=form.last_name label='アカウント氏名' %}
-        {% include 'forms/image.html' with form=form.image content=user.image %}
-        {% include 'forms/text.html' with form=form.password %}
-        <button type="submit" value="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-3 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">登録</button>
+        <div>
+          {% if image.image %}<img src="/upload/{{image.image}}" class="w-[90px] h-[90px] object-contain bg-slate-100">{% endif %}
+          <form id="add_blog" >
+            {{ formImage }}
+            <a id="upload" onclick='OnButtonClick()'>画像登録</a>
+          </form>
         </div>
       </div>
 
-    </form>
+      <form action="" method="post" class="w-full" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8">
+          <div class="md:w-7/12 w-full">
+          {% include 'forms/text.html' with form=form.name %}
+          {% include 'forms/text_multiple.html' with form1=form.first_name form2=form.last_name label='アカウント氏名' %}
+          {% include 'forms/text.html' with form=form.password %}
+          <!--<button type="submit" value="submit" name="edit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-3 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">登録</button>-->
+          <button type="submit" value="submit" name="confirm" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-3 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">確認</button>
+          </div>
+        </div>
+      </form>
+
   </div>
 </div>
 
+{% endblock %}
+
+{% block extrajs %}
+<script>
+
+  // 記事追加
+  function OnButtonClick(){
+    //console.log("Hello world!");
+    fetch('/hoge', {
+        headers:{
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest', 
+        },
+      })
+      .then(response => {
+          return response.json() 
+      })
+      .then(data => {
+         console.log(data)
+      })
+  }
+
+</script>
 {% endblock %}

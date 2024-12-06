@@ -11,5 +11,7 @@ urlpatterns = [
     path('user', user.index, name='user_index'),
     path('user/create', user.create, name='user_create'),
     path('user/edit/<int:pk>/', user.edit, name="user_edit"),
+    # path('user/confirm', user.confirm, name='user_confirm'),
     path('user/search', user.search, name='search'),
+    path('hoge', user.hoge, name='hoge'),
 ]

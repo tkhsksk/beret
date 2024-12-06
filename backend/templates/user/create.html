@@ -31,14 +31,11 @@
         </div>
 
         <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8">
-        	<div class="w-full">
+        	<div class="md:w-7/12 w-full">
 				{% csrf_token %}
-				{% for fm in form %}
-			        <div class="mb-3">
-			            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{fm.label}}</label>
-			            <p>{{fm}} </p>
-			        </div>
-			    {% endfor %}
+				{% include 'forms/text.html' with form=form.name %}
+				{% include 'forms/text_multiple.html' with form1=form.first_name form2=form.last_name label='アカウント氏名' %}
+        {% include 'forms/text.html' with form=form.password %}
 				<button type="submit" value="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-3 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">登録</button>
 			</div>
         </div>
