@@ -4,4 +4,7 @@
         <p class=" w-full">{{ form1 }}</p>
         <p class=" w-full">{{ form2 }}</p>
     </div>
+    {% if form1.errors %}
+        <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.errors.as_text }}</p>
+    {% endif %}
 </div>

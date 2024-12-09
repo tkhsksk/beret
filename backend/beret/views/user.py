@@ -3,14 +3,17 @@ from beret.forms import UserForm # UserFormをimport
 from beret.forms import UserImageForm 
 from beret.models import User
 from beret.models import UserImages
-from django.http import JsonResponse
 
 def index(request):
     users = User.objects.all()
+    # userImages = UserImages.objects.all()
+    # if 'res' in request.session:
+    #     request.session.clear()
 
     # HTMLで読み込むformを定義
     context = {
         'users': users,
+        # 'user_images': userImages,
     }
     return render(request, "user/index.html", context)
 
@@ -63,15 +66,13 @@ def edit(request, pk):
 
     if request.method == "POST":
         if 'confirm' in request.POST:
-            return render(request, 'user/confirm.html', context)
-        if 'editImage' in request.POST:
-            newImage = formImage.save(commit=False)
-            newImage.user = User.objects.get(id=pk)
-            newImage.save()
-
-            return redirect('user_edit', pk)
+            if form.is_valid():
+                return render(request, 'user/confirm.html', context)
+            else:
+                render(request, "user/edit.html", context)
         if form.is_valid():
             form.save()
+            request.session['res'] = 'success'
             return redirect('user_index')
 
     return render(request, "user/edit.html", context)
@@ -87,17 +88,24 @@ def search(request):
     context = {"users": users}
     return render(request, "user/search.html", context)
 
-def hoge(request):
+def upload_image(request):
+    from django.http import JsonResponse
+
     data = {}
-    data['pinoko'] = 'アッチョンブリケ'
-    form = UserImageForm()
+    data['method'] = request.method
+    data['post'] = request.POST
+
     if request.method == "POST":
-        form = UserImageForm(request.POST, request.FILES)
+        try:
+            userImage = UserImages.objects.get(user_id=request.POST['user_id'])
+        except UserImages.DoesNotExist:
+            userImage = None
+        form = UserImageForm(request.POST, request.FILES, instance=userImage)
+
         if form.is_valid():
-            form.save()
-            data['form_is_valid'] = True
+            obj = form.save(commit=False)
+            obj.user_id = request.POST['user_id']
+            obj.save()
             return JsonResponse(data)
-        else:
-            data['form_is_valid'] = False
 
     return JsonResponse(data)

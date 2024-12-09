@@ -15,6 +15,7 @@ class UserForm(forms.ModelForm):
             'name',
             'first_name',
             'last_name',
+            'mail',
             'password',
         )
         ##  右のように個別指定してもOK → fields = ["name"]
@@ -22,6 +23,7 @@ class UserForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': INPUT_CLASSES}),
             'first_name': forms.TextInput(attrs={'class': INPUT_CLASSES}),
             'last_name': forms.TextInput(attrs={'class': INPUT_CLASSES}),
+            'mail': forms.TextInput(attrs={'class': INPUT_CLASSES}),
             'password': forms.TextInput(attrs={'class': INPUT_CLASSES}),
         }
 

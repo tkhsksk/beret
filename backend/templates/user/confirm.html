@@ -23,10 +23,9 @@
 
       <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8">
         <div class="md:w-7/12 w-full">
-          {{ form.name.value }}
-          {{ form.first_name.value }}
-          {{ form.last_name.value }}
-          {{hoge}}
+          {% include 'forms/text_confirm.html' with val=form.name %}
+          {% include 'forms/text_multiple_confirm.html' with val1=form.first_name val2=form.last_name label='アカウント氏名' %}
+          {% include 'forms/text_confirm.html' with val=form.mail %}
           <form action="" method="post" class="w-full" enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in form %} {{ field.as_hidden }} {% endfor %}

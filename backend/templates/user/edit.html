@@ -21,21 +21,22 @@
         </div>
         <div>
           {% if image.image %}<img src="/upload/{{image.image}}" class="w-[90px] h-[90px] object-contain bg-slate-100">{% endif %}
-          <form id="add_blog" >
+          <form id="edit_image" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
             {{ formImage }}
             <a id="upload" onclick='OnButtonClick()'>画像登録</a>
           </form>
         </div>
       </div>
 
-      <form action="" method="post" class="w-full" enctype="multipart/form-data">
+      <form action="" method="post" class="w-full" novalidate>
         {% csrf_token %}
         <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8">
           <div class="md:w-7/12 w-full">
           {% include 'forms/text.html' with form=form.name %}
           {% include 'forms/text_multiple.html' with form1=form.first_name form2=form.last_name label='アカウント氏名' %}
-          {% include 'forms/text.html' with form=form.password %}
-          <!--<button type="submit" value="submit" name="edit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-3 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">登録</button>-->
+          {% include 'forms/text.html' with form=form.mail %}
+          {{ form.password.as_hidden }}
           <button type="submit" value="submit" name="confirm" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-3 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">確認</button>
           </div>
         </div>
@@ -49,21 +50,46 @@
 {% block extrajs %}
 <script>
 
-  // 記事追加
+  const getCookie = (name) => {
+    if (document.cookie && document.cookie !== '') {
+      for (const cookie of document.cookie.split(';')) {
+        const [key, value] = cookie.trim().split('=')
+        if (key === name) {
+          return decodeURIComponent(value)
+        }
+      }
+    }
+  }
+  const csrftoken = getCookie('csrftoken')
+
   function OnButtonClick(){
-    //console.log("Hello world!");
-    fetch('/hoge', {
-        headers:{
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest', 
-        },
-      })
-      .then(response => {
-          return response.json() 
-      })
-      .then(data => {
-         console.log(data)
-      })
+    const fd = new FormData();
+    fd.append('user_id', {{user.pk}});
+    var clear = '';
+    if(document.getElementById("image-clear_id")){
+      var clear = document.getElementById("image-clear_id").checked;
+    }
+    if(clear){
+      fd.append('image-clear', 'checked');
+    }
+    var image = document.getElementById("id_image").files[0]
+    fd.append('image', image);
+    console.log(...fd.entries());
+
+    fetch('/user/upload/image', {
+      method: 'POST',
+      body: fd,
+      headers:{
+          'X-CSRFToken': csrftoken,
+      },
+    })
+    .then(response => {
+      return response.json() 
+    })
+    .then(data => {
+      console.log(data)
+      console.log(data.post.image)
+    })
   }
 
 </script>

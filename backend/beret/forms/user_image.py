@@ -2,6 +2,7 @@
 from django import forms
 # モデルをインポート
 from beret.models import *
+from beret.models import UserImages
 
 # Musicialモデルを利用したMusicialFormを作成
 
