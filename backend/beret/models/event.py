@@ -10,9 +10,9 @@ class Event(models.Model):
     title      = models.CharField(max_length=255, verbose_name="タイトル")
     notes      = models.TextField(max_length=5000, blank=True, null=True, verbose_name="紹介文")
     mail       = models.EmailField(max_length=255, blank=True, null=True, verbose_name="メールアドレス")
-    tel        = models.IntegerField(blank=True, null=True, verbose_name="電話番号")
+    tel        = models.CharField(max_length=11, blank=True, null=True, verbose_name="電話番号")
     url        = models.URLField(max_length=255, blank=True, null=True, verbose_name="イベントページ")
-    status     = models.CharField(max_length=1, default='E', verbose_name="ステータス")
+    status     = models.BooleanField(default=False, verbose_name="ステータス")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

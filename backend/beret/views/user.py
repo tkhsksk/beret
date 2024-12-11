@@ -7,12 +7,13 @@ from beret.models import UserImages
 def index(request):
     users = User.objects.all()
     # userImages = UserImages.objects.all()
-    # if 'res' in request.session:
-    #     request.session.clear()
+    if 'res' in request.session:
+        request.session.clear()
 
     # HTMLで読み込むformを定義
     context = {
         'users': users,
+        "choices": UserForm.STATUS_CHOICES,
         # 'user_images': userImages,
     }
     return render(request, "user/index.html", context)
@@ -62,6 +63,7 @@ def edit(request, pk):
         "user" : user,
         "image": userImage,
         "formImage": formImage,
+        "choices": form.STATUS_CHOICES,
     }
 
     if request.method == "POST":
@@ -101,6 +103,8 @@ def upload_image(request):
         except UserImages.DoesNotExist:
             userImage = None
         form = UserImageForm(request.POST, request.FILES, instance=userImage)
+        data['errors'] = form.errors
+        data['valid'] = form.is_valid()
 
         if form.is_valid():
             obj = form.save(commit=False)

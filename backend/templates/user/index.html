@@ -21,7 +21,7 @@
               <div>
                 <h2 class="mb-0.5 font-semibold">ユーザーアカウント管理</h2>
                 <h3 class="text-sm font-medium text-slate-600">
-                  All your recent transactions in one place
+                  総ユーザー数：{{users|length}}
                 </h3>
               </div>
               <div>
@@ -43,7 +43,7 @@
                   <thead>
                     <tr class="border-b-2 border-slate-100">
                       <th
-                        class="min-w-[140px] py-3 pe-3 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
+                        class="min-w-[170px] py-3 pe-3 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
                       >
                         登録日
                       </th>
@@ -58,14 +58,9 @@
                         メールアドレス
                       </th>
                       <th
-                        class="min-w-[180px] px-3 py-2 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
+                        class="min-w-[100px] px-3 py-2 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
                       >
-                        Category
-                      </th>
-                      <th
-                        class="px-3 py-2 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
-                      >
-                        Amount
+                        有効状態
                       </th>
                       <th
                         class="min-w-[180px] py-3 pe-3 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
@@ -87,7 +82,7 @@
                     {% for user in users %}
                     <tr class="border-b border-slate-100">
                       <td class="py-3 pe-3 text-start text-slate-600">
-                        {{ user.created_at|date:"Y/m/d H:i" }}
+                        {{ user.created_at }}
                       </td>
                       <td class="p-3">
                         <a
@@ -99,16 +94,17 @@
                       <td class="p-3 font-medium text-slate-600">
                         {{user.mail}}
                       </td>
-                      <td class="p-3 text-start">{{user.image}}</td>
                       <td class="p-3 font-medium">
                         <div
                           class="inline-block rounded-full bg-rose-100 px-2 py-1 text-xs font-semibold leading-4 text-rose-800"
                         >
-                          -$200.00
+                          {% for choice in choices %}
+                           <p>{% if choice.0 is user.status %}{{ choice.1 }}{% endif %}</p>
+                          {% endfor %}
                         </div>
                       </td>
                       <td class="py-3 pe-3 text-start text-slate-600">
-                        {{ user.updated_at|date:"Y/m/d H:i" }}
+                        {{ user.updated_at }}
                       </td>
                       <td class="py-3 ps-3 text-end font-medium">
                         <a

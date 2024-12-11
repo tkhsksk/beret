@@ -1,0 +1,6 @@
+<div class="mb-3">
+    <label class="font-semibold block text-sm font-medium text-gray-900 dark:text-white">{{ val.label }}</label>
+    {% for choice in choices %}
+     <p>{% if choice.0 is val.value %}{{ choice.1 }}{% endif %}</p>
+    {% endfor %}
+</div>

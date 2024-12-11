@@ -7,16 +7,18 @@
 
 {% block main %}
 <div class="container mx-auto px-4 py-4 lg:p-8 xl:max-w-7xl">
+  <p class="text-black placeholder-gray-400 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-cyan-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400 hidden w-[10rem]"></p>
   <div
     class="flex flex-col rounded-lg border bg-white md:col-span-3"
     >
       <div
-        class="flex flex-col items-center justify-between gap-4 border-b border-slate-100 p-5 text-center sm:flex-row sm:text-start"
+        class="flex flex-col items-center justify-between gap-4 border-b border-slate-300 p-5 text-center sm:flex-row sm:text-start"
       >
         <div>
           <h2 class="mb-0.5 font-semibold">ユーザーアカウント管理</h2>
           <h3 class="text-sm font-medium text-slate-600">
-            All your recent transactions in one place
+            登録日：{{ user.created_at }}<br />
+            更新日：{{ user.updated_at }}
           </h3>
         </div>
         <div>
@@ -24,20 +26,38 @@
           <form id="edit_image" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ formImage }}
-            <a id="upload" onclick='OnButtonClick()'>画像登録</a>
+            <a id="upload" role="button" onclick='OnButtonClick()' class="text-blue-700">画像登録</a>
           </form>
         </div>
       </div>
 
       <form action="" method="post" class="w-full" novalidate>
         {% csrf_token %}
-        <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8">
+        <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8 border-b border-slate-300">
           <div class="md:w-7/12 w-full">
-          {% include 'forms/text.html' with form=form.name %}
-          {% include 'forms/text_multiple.html' with form1=form.first_name form2=form.last_name label='アカウント氏名' %}
-          {% include 'forms/text.html' with form=form.mail %}
+          {% include 'forms/input.html' with form=form.name %}
+          {% include 'forms/input_multiple.html' with form1=form.first_name form2=form.last_name label='アカウント氏名' %}
+          {% include 'forms/input.html' with form=form.mail %}
+          </div>
+        </div>
+        <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8 border-b border-slate-300">
+          <div class="md:w-7/12 w-full">
+          {% include 'forms/input.html' with form=form.post %}
+          {% include 'forms/input.html' with form=form.address1 label='住所' %}
+          {% include 'forms/input.html' with form=form.address2 nolabel=true %}
+          </div>
+        </div>
+        <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8 border-b border-slate-300">
+          <div class="md:w-7/12 w-full">
+          {% include 'forms/text_area.html' with form=form.profile %}
+          {% include 'forms/text_area.html' with form=form.notes %}
+          {% include 'forms/checkbox.html' with form=form.status %}
+          </div>
+        </div>
+        <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8">
           {{ form.password.as_hidden }}
-          <button type="submit" value="submit" name="confirm" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-3 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">確認</button>
+          <div class="md:w-7/12 w-full">
+            <button type="submit" value="submit" name="confirm" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">確認</button>
           </div>
         </div>
       </form>
@@ -88,7 +108,7 @@
     })
     .then(data => {
       console.log(data)
-      console.log(data.post.image)
+      alert(data.valid)
     })
   }
 
