@@ -1,4 +1,5 @@
-<div class="mb-3">
+<div>
     <label class="font-semibold block text-sm font-medium text-gray-900 dark:text-white">{{ label }}</label>
     <p>{{ val1.value }} {{ val2.value }}</p>
+    {% if not val1.value and not val2.value %}<p class="text-slate-400">未入力</p>{% endif %}
 </div>

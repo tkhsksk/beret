@@ -20,29 +20,91 @@
 				</h3>
 			</div>
         	<div>
-                <a
-                  href="{% url 'user_create' %}"
-                  class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold leading-5 text-slate-800 hover:border-violet-300 hover:text-violet-800 active:border-slate-200"
-                >
-                  新規ユーザー
-                </a>
+        		<button type="submit" value="submit" name="confirm" onclick='OutForm()' class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">確認</button>
           	</div>
         </div>
 
-        <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8">
-        	<div class="md:w-7/12 w-full">
-        		<form action="" method="post" class="w-full" novalidate>
-							{% csrf_token %}
-							{% include 'forms/input.html' with form=form.name %}
-							{% include 'forms/input_multiple.html' with form1=form.first_name form2=form.last_name label='アカウント氏名' %}
-							{% include 'forms/input.html' with form=form.mail %}
-			        {% include 'forms/input.html' with form=form.password %}
-							<button type="submit" value="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-3 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">登録</button>
-						</form>
+    		<form action="" method="post" class="w-full" novalidate>
+					{% csrf_token %}
+					<div class="grid grid-cols-5 gap-4 px-6 py-4 md:px-10 md:py-8 border-b border-slate-300">
+	          <div class="md:col-span-3 col-span-5 md:order-1 order-2 grid gap-3">
+	            {% include 'forms/input.html' with form=form.name %}
+	            {% include 'forms/input_multiple.html' with form1=form.first_name form2=form.last_name label='アカウント氏名' %}
+	            {% include 'forms/input.html' with form=form.mail %}
+	            {% include 'forms/input.html' with form=form.password class='passwd_on' %}
+	            <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" type="button" onclick='GeneratePasswd()'>安全なパスワードを生成</button>
+	          </div>
+	          <div class="md:col-span-2 col-span-5 md:order-2 order-1">
+	          	<p class="font-semibold block text-sm font-medium text-gray-900 dark:text-white mb-2">パスワード</p>
+	            <ul>
+	              <li class="font-mono text-xs text-indigo-600 dark:text-indigo-300">パスワードは全体で8文字以上、30文字以下<br />少なくとも1つの数字、小文字のアルファベット、大文字のアルファベットが必要です</li>
+	            </ul>
+	          </div>
+	        </div>
+
+	        <div class="grid grid-cols-5 gap-4 px-6 py-4 md:px-10 md:py-8 border-b border-slate-300">
+	          <div class="md:col-span-3 col-span-5 md:order-1 order-2 grid gap-3">
+	            {% include 'forms/input.html' with form=form.post %}
+            	{% include 'forms/input.html' with form=form.address1 label='住所' %}
+            	{% include 'forms/input.html' with form=form.address2 nolabel=true %}
+	          </div>
+	          <div class="md:col-span-2 col-span-5 md:order-2 order-1">
+	            <ul>
+	              <li class="font-mono text-xs text-indigo-600 dark:text-indigo-300">ここには各フォームの入力方法などを入力してください</li>
+	            </ul>
+	          </div>
+	        </div>
+
+	        <div class="grid grid-cols-5 gap-4 px-6 py-4 md:px-10 md:py-8 border-b border-slate-300">
+	          <div class="md:col-span-3 col-span-5 md:order-1 order-2 grid gap-3">
+	            {% include 'forms/text_area.html' with form=form.profile %}
+            	{% include 'forms/text_area.html' with form=form.notes %}
+            	{% include 'forms/checkbox.html' with form=form.status %}
+	          </div>
+	          <div class="md:col-span-2 col-span-5 md:order-2 order-1">
+	            <ul>
+	              <li class="font-mono text-xs text-indigo-600 dark:text-indigo-300">ここには各フォームの入力方法などを入力してください</li>
+	            </ul>
+	          </div>
+	        </div>
+
+	        <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8">
+						<button type="submit" value="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" id="out-form-at" name="confirm">確認</button>
 					</div>
-        </div>
+				</form>
         
     </div>
 </div>
 
+{% endblock %}
+
+{% block extrajs %}
+<script>
+
+	function OutForm(){
+    let b = document.getElementById('out-form-at')
+    b.click()
+  }
+
+  function InputValue(val){
+  	let input = document.getElementById('id_password');
+  	input.value = val;
+  }
+
+  function GeneratePasswd(){
+  	let num = 13
+    fetch('/generate/password/'+num, {
+      method: 'GET',
+    })
+    .then(response => {
+      return response.json() 
+    })
+    .then(data => {
+      console.log(data)
+      InputValue(data.passwd)
+      // alert(data.res)
+    })
+  }
+
+</script>
 {% endblock %}

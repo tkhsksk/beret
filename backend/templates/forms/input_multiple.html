@@ -1,9 +1,16 @@
-<div class="mb-3">
+<div>
     <label class="font-semibold block text-sm font-medium text-gray-900 dark:text-white">{{ label }}</label>
     <div class="flex gap-2">
         <p class=" w-full">{{ form1 }}</p>
         <p class=" w-full">{{ form2 }}</p>
     </div>
-    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form1.errors.as_text }}</p>
-    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form2.errors.as_text }}</p>
+    {% if form1.errors.as_text %}
+        <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form1.errors.as_text }}</p>
+    {% endif %}
+    {% if form2.errors.as_text %}
+        <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form2.errors.as_text }}</p>
+    {% endif %}
+    {% if form.non_field_errors %}
+        <div class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.non_field_errors }}</div>
+    {% endif %}
 </div>

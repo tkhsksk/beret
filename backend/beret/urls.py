@@ -14,4 +14,6 @@ urlpatterns = [
     # path('user/confirm', user.confirm, name='user_confirm'),
     path('user/search', user.search, name='search'),
     path('user/upload/image', user.upload_image, name='upload_image'),
+    # generator
+    path('generate/password/<int:pk>/', generate.password, name='generate_password'),
 ]

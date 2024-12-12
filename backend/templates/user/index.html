@@ -13,131 +13,134 @@
   </div>
   {% endif %}
 	<div
-            class="flex flex-col rounded-lg border bg-white md:col-span-3"
-          >
-            <div
-              class="flex flex-col items-center justify-between gap-4 border-b border-slate-100 p-5 text-center sm:flex-row sm:text-start"
-            >
-              <div>
-                <h2 class="mb-0.5 font-semibold">ユーザーアカウント管理</h2>
-                <h3 class="text-sm font-medium text-slate-600">
-                  総ユーザー数：{{users|length}}
-                </h3>
-              </div>
-              <div>
-                <a
-                  href="{% url 'user_create' %}"
-                  class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold leading-5 text-slate-800 hover:border-violet-300 hover:text-violet-800 active:border-slate-200"
-                >
-                  新規ユーザー
-                </a>
-              </div>
-            </div>
+    class="flex flex-col rounded-lg border bg-white md:col-span-3"
+  >
+    <div
+      class="flex flex-col items-center justify-between gap-4 border-b border-slate-100 p-5 text-center sm:flex-row sm:text-start"
+    >
+      <div>
+        <h2 class="mb-0.5 font-semibold">ユーザーアカウント管理</h2>
+        <h3 class="text-sm font-medium text-slate-600">
+          総ユーザー数：{{users|length}}<br />
+          最終登録ユーザー：{{latest.created_at}}：{{latest.name}}
+        </h3>
+      </div>
+      <div>
+        <a
+          href="{% url 'user_create' %}"
+          class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold leading-5 text-slate-800 hover:border-violet-300 hover:text-violet-800 active:border-slate-200"
+        >
+          新規ユーザー
+        </a>
+      </div>
+    </div>
             
-            <div class="p-5">
-              <!-- Responsive Table Container -->
-              <div class="min-w-full overflow-x-auto rounded">
-                <!-- Alternate Responsive Table -->
-                <table class="min-w-full align-middle text-sm">
-                  <!-- Table Header -->
-                  <thead>
-                    <tr class="border-b-2 border-slate-100">
-                      <th
-                        class="min-w-[170px] py-3 pe-3 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
-                      >
-                        登録日
-                      </th>
-                      <th
-                        class="min-w-[180px] px-3 py-2 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
-                      >
-                        アカウント名
-                      </th>
-                      <th
-                        class="min-w-[180px] px-3 py-2 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
-                      >
-                        メールアドレス
-                      </th>
-                      <th
-                        class="min-w-[100px] px-3 py-2 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
-                      >
-                        有効状態
-                      </th>
-                      <th
-                        class="min-w-[180px] py-3 pe-3 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
-                      >
-                        更新日
-                      </th>
-                      <th
-                        class="min-w-[100px] py-2 ps-3 text-end text-sm font-semibold uppercase tracking-wider text-slate-700"
-                      >
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <!-- END Table Header -->
+    <div class="p-5">
+      <!-- Responsive Table Container -->
+      <div class="min-w-full overflow-x-auto rounded">
+        <!-- Alternate Responsive Table -->
+        <table class="min-w-full align-middle text-sm">
+          <!-- Table Header -->
+          <thead>
+            <tr class="border-b-2 border-slate-100">
+              <th
+                class="min-w-[170px] py-3 pe-3 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
+              >
+                登録日
+              </th>
+              <th
+                class="min-w-[180px] px-3 py-2 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
+              >
+                アカウント名
+              </th>
+              <th
+                class="min-w-[180px] px-3 py-2 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
+              >
+                メールアドレス
+              </th>
+              <th
+                class="min-w-[100px] px-3 py-2 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
+              >
+                有効状態
+              </th>
+              <th
+                class="min-w-[180px] py-3 pe-3 text-start text-sm font-semibold uppercase tracking-wider text-slate-700"
+              >
+                更新日
+              </th>
+              <th
+                class="min-w-[100px] py-2 ps-3 text-end text-sm font-semibold uppercase tracking-wider text-slate-700"
+              >
+                閲覧と編集
+              </th>
+            </tr>
+          </thead>
+          <!-- END Table Header -->
 
-                  <!-- Table Body -->
-                  <tbody>
+          <!-- Table Body -->
+          <tbody>
 
-                    {% for user in users %}
-                    <tr class="border-b border-slate-100">
-                      <td class="py-3 pe-3 text-start text-slate-600">
-                        {{ user.created_at }}
-                      </td>
-                      <td class="p-3">
-                        <a
-                          href="{% url 'user_edit' user.id %}"
-                          class="font-medium text-violet-500 hover:text-violet-700"
-                          >{{user.name}}</a
-                        >
-                      </td>
-                      <td class="p-3 font-medium text-slate-600">
-                        {{user.mail}}
-                      </td>
-                      <td class="p-3 font-medium">
-                        <div
-                          class="inline-block rounded-full bg-rose-100 px-2 py-1 text-xs font-semibold leading-4 text-rose-800"
-                        >
-                          {% for choice in choices %}
-                           <p>{% if choice.0 is user.status %}{{ choice.1 }}{% endif %}</p>
-                          {% endfor %}
-                        </div>
-                      </td>
-                      <td class="py-3 pe-3 text-start text-slate-600">
-                        {{ user.updated_at }}
-                      </td>
-                      <td class="py-3 ps-3 text-end font-medium">
-                        <a
-                          href="javascript:void(0)"
-                          class="group inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1.5 font-medium text-slate-800 hover:border-violet-300 hover:text-violet-800 active:border-slate-200"
-                        >
-                          <span>View</span>
-                          <svg
-                            class="hi-mini hi-arrow-right inline-block h-5 w-5 text-slate-400 group-hover:text-violet-600 group-active:translate-x-0.5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            aria-hidden="true"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
-                              clip-rule="evenodd"
-                            ></path>
-                          </svg>
-                        </a>
-                      </td>
-                    </tr>
-                    {% endfor %}
+            {% for user in users %}
+            <tr class="border-b border-slate-100">
+              <td class="py-3 pe-3 text-start text-slate-600">
+                {{ user.created_at }}
+              </td>
+              <td class="p-3">
+                <a
+                  href="{% url 'user_edit' user.id %}"
+                  class="font-medium text-violet-500 hover:text-violet-700"
+                  >{{user.name}}</a
+                >
+              </td>
+              <td class="p-3 font-medium text-slate-600">
+                {{user.mail}}
+              </td>
+              <td class="p-3 font-medium">
+                {% for choice in choices %}
+                {% if choice.0 is user.status %}
+                <div
+                  class="inline-block rounded-full bg-{{ choice.2 }}-100 px-2 py-1 text-xs font-semibold leading-4 text-{{ choice.2 }}-800"
+                >
+                   <p>{{ choice.1 }}</p>
+                </div>
+                {% endif %}
+                {% endfor %}
+              </td>
+              <td class="py-3 pe-3 text-start text-slate-600">
+                {{ user.updated_at }}
+              </td>
+              <td class="py-3 ps-3 text-end font-medium">
+                <a
+                  href="{% url 'user_edit' user.id %}"
+                  class="group inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1.5 font-medium text-slate-800 hover:border-violet-300 hover:text-violet-800 active:border-slate-200"
+                >
+                  <span>View</span>
+                  <svg
+                    class="hi-mini hi-arrow-right inline-block h-5 w-5 text-slate-400 group-hover:text-violet-600 group-active:translate-x-0.5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
 
-                  </tbody>
-                  <!-- END Table Body -->
-                </table>
-                <!-- END Alternate Responsive Table -->
-              </div>
-              <!-- END Responsive Table Container -->
-            </div>
-          </div>
+          </tbody>
+          <!-- END Table Body -->
+        </table>
+        <!-- END Alternate Responsive Table -->
+      </div>
+      <!-- END Responsive Table Container -->
+    </div>
+  </div>
 </div>
 {% endblock %}
 

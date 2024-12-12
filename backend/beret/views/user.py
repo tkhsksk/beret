@@ -5,7 +5,8 @@ from beret.models import User
 from beret.models import UserImages
 
 def index(request):
-    users = User.objects.all()
+    users = User.objects.order_by('-id')
+    latest = User.objects.order_by('-created_at').first()
     # userImages = UserImages.objects.all()
     if 'res' in request.session:
         request.session.clear()
@@ -13,7 +14,8 @@ def index(request):
     # HTMLで読み込むformを定義
     context = {
         'users': users,
-        "choices": UserForm.STATUS_CHOICES,
+        'choices': UserForm.STATUS_CHOICES,
+        'latest': latest,
         # 'user_images': userImages,
     }
     return render(request, "user/index.html", context)
@@ -21,28 +23,40 @@ def index(request):
 def create(request):
     # フォームを作成
     form = UserForm()
-
-    # メソッドがPOSTだった場合
     if request.method == "POST":
-        # POSTデータを取得
         form = UserForm(request.POST)
-
-        # データが有効か確認
-        if form.is_valid():
-            # 有効であればデータを格納
-            form.save()
-            # beret/urls.pyに設定したnameにリダイレクトする
-            return redirect('user_index')
 
     # HTMLで読み込むformを定義
     context = {
         'form': form,
+        "choices": form.STATUS_CHOICES,
     }
+
+    # メソッドがPOSTだった場合
+    if request.method == "POST":
+        # POSTデータを取得
+        if 'confirm' in request.POST:
+            if form.is_valid():
+                return render(request, 'user/confirm.html', context)
+
+        # データが有効か確認
+        if form.is_valid():
+            # user = form.save()
+            # user.set_password(user.password)
+            # user.save()
+            form.save()
+            return redirect('user_index')
+
     return render(request, "user/create.html", context)
 
 def edit(request, pk):
     # Userモデルからidを元にデータを取得
-    user = User.objects.get(id=pk)
+    try:
+        user = User.objects.get(id=pk)
+    except User.DoesNotExist:
+        # 存在しなければリダイレクト
+        return redirect('user_index')
+
     try:
         userImage = UserImages.objects.get(user_id=pk)
     except UserImages.DoesNotExist:
@@ -74,7 +88,7 @@ def edit(request, pk):
                 render(request, "user/edit.html", context)
         if form.is_valid():
             form.save()
-            request.session['res'] = 'success'
+            # request.session['res'] = 'success'
             return redirect('user_index')
 
     return render(request, "user/edit.html", context)

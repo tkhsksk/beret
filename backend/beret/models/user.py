@@ -1,10 +1,11 @@
 import uuid
 import os.path
+import re
 
 from django.core.validators import *
 from django.core.exceptions import ValidationError
 from django.db import models
-from django import forms
+from django.contrib.auth.models import AbstractUser
 
 def get_image_path(self, filename):
     prefix = 'image/user/'
@@ -14,15 +15,22 @@ def get_image_path(self, filename):
 
 def check_post(value):
     if len(value) != 7:
-        raise ValidationError('郵便番号は7桁で入力せなあかんで')
+        raise ValidationError('郵便番号は7桁で入力してください')
     if not value.isdecimal():
-        raise ValidationError('郵便番号は数字のみで構成されなあかんで')
-      
+        raise ValidationError('郵便番号は数字のみで構成してください')
+
+def check_password(value):
+    REX = r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,64}"
+    result = re.fullmatch(REX, value)
+    if not result:
+        raise ValidationError("右記のパスワード条件に従って入力してください")
+
+# class CustomUser(AbstractUser):
 class User(models.Model):
     name       = models.CharField(max_length=255, verbose_name="ユーザー名", validators=[MinLengthValidator(3), MaxLengthValidator(14)])
     first_name = models.CharField(max_length=50, null=True, verbose_name="氏名1", validators=[MinLengthValidator(1), MaxLengthValidator(50)])
     last_name  = models.CharField(max_length=50, null=True, verbose_name="氏名2", validators=[MinLengthValidator(1), MaxLengthValidator(50)])
-    password   = models.CharField(max_length=255, verbose_name="パスワード")
+    password   = models.CharField(max_length=255, verbose_name="パスワード", validators=[check_password])
     mail       = models.EmailField(max_length=255, unique=True, default='', verbose_name="メールアドレス")
     post       = models.CharField(max_length=7, null=True, verbose_name="郵便番号", validators=[check_post])
     address1   = models.CharField(max_length=152, null=True, verbose_name="住所1", validators=[MaxLengthValidator(152)])

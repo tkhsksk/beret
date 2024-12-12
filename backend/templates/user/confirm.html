@@ -11,22 +11,57 @@
     class="flex flex-col rounded-lg border bg-white md:col-span-3"
     >
       <div
-        class="flex flex-col items-center justify-between gap-4 border-b border-slate-100 p-5 text-center sm:flex-row sm:text-start"
+        class="flex flex-col items-center justify-between gap-4 border-b border-slate-300 p-5 text-center sm:flex-row sm:text-start"
       >
         <div>
           <h2 class="mb-0.5 font-semibold">ユーザーアカウント編集確認</h2>
-          <h3 class="text-sm font-medium text-slate-600">
-            All your recent transactions in one place
-          </h3>
+          <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+            <span class="font-medium">[注意]</span> このページは確認ページです、ページ最下の「登録」ボタンを必ずクリックしてください
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-5 gap-4 px-6 py-4 md:px-10 md:py-8 border-b border-slate-300">
+        <div class="md:col-span-3 col-span-5 md:order-1 order-2 grid gap-3">
+          {% include 'forms/input_confirm.html' with val=form.name %}
+          {% include 'forms/input_multiple_confirm.html' with val1=form.first_name val2=form.last_name label='アカウント氏名' %}
+          {% include 'forms/input_confirm.html' with val=form.mail %}
+        </div>
+        <div class="md:col-span-2 col-span-5 md:order-2 order-1">
+          <ul>
+            <li class="font-mono text-xs text-indigo-600 dark:text-indigo-300">ここには各フォームの入力方法などを入力してください</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-5 gap-4 px-6 py-4 md:px-10 md:py-8 border-b border-slate-300">
+        <div class="md:col-span-3 col-span-5 md:order-1 order-2 grid gap-3">
+          {% include 'forms/input_confirm.html' with val=form.post %}
+          {% include 'forms/input_confirm.html' with val=form.address1 %}
+          {% include 'forms/input_confirm.html' with val=form.address2 %}
+        </div>
+        <div class="md:col-span-2 col-span-5 md:order-2 order-1">
+          <ul>
+            <li class="font-mono text-xs text-indigo-600 dark:text-indigo-300">ここには各フォームの入力方法などを入力してください</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-5 gap-4 px-6 py-4 md:px-10 md:py-8 border-b border-slate-300">
+        <div class="md:col-span-3 col-span-5 md:order-1 order-2 grid gap-3">
+          {% include 'forms/input_confirm.html' with val=form.profile %}
+          {% include 'forms/input_confirm.html' with val=form.notes %}
+          {% include 'forms/checkbox_confirm.html' with val=form.status choices=choices %}
+        </div>
+        <div class="md:col-span-2 col-span-5 md:order-2 order-1">
+          <ul>
+            <li class="font-mono text-xs text-indigo-600 dark:text-indigo-300">ここには各フォームの入力方法などを入力してください</li>
+          </ul>
         </div>
       </div>
 
       <div class="flex gap-4 px-6 py-4 md:px-10 md:py-8">
         <div class="md:w-7/12 w-full">
-          {% include 'forms/input_confirm.html' with val=form.name %}
-          {% include 'forms/input_multiple_confirm.html' with val1=form.first_name val2=form.last_name label='アカウント氏名' %}
-          {% include 'forms/input_confirm.html' with val=form.mail %}
-          {% include 'forms/checkbox_confirm.html' with val=form.status choices=choices %}
           <form action="" method="post" class="w-full" enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in form %} {{ field.as_hidden }} {% endfor %}
