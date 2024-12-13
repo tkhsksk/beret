@@ -1,33 +1,40 @@
-import uuid
-import os.path
-import re
-
 from django.core.validators import *
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, PermissionsMixin, UserManager
+from beret.validation import *
 
-def get_image_path(self, filename):
-    prefix = 'image/user/'
-    name = str(uuid.uuid4()).replace('-', '')
-    extension = os.path.splitext(filename)[-1]
-    return prefix + name + extension
+# 拡張ユーザーモデル用のマネージャー
+class UserManager(UserManager):
 
-def check_post(value):
-    if len(value) != 7:
-        raise ValidationError('郵便番号は7桁で入力してください')
-    if not value.isdecimal():
-        raise ValidationError('郵便番号は数字のみで構成してください')
+    # 通常・管理者ユーザー共通の登録
+    def create_user(self, email, password, **extra_fields):
+        if not email:
+            raise ValueError('メールアドレスは必須です')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
-def check_password(value):
-    REX = r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,64}"
-    result = re.fullmatch(REX, value)
-    if not result:
-        raise ValidationError("右記のパスワード条件に従って入力してください")
+    # 通常ユーザーの設定
+    def manage_user(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_manager', False)
+        extra_fields.setdefault('is_admin', False)
+        return self.create_user(email, password, **extra_fields)
 
-# class CustomUser(AbstractUser):
-class User(models.Model):
-    name       = models.CharField(max_length=255, verbose_name="ユーザー名", validators=[MinLengthValidator(3), MaxLengthValidator(14)])
+    # 管理者ユーザーの設定
+    def manage_adminuser(self, email, password, **extra_fields):
+        extra_fields.setdefault('is_manager', True)
+        extra_fields.setdefault('is_admin', True)
+        if extra_fields.get('is_manager') is not True:
+            raise ValueError('管理者ユーザーはis_managerがTrueの必要があります')
+        if extra_fields.get('is_admin') is not True:
+            raise ValueError('管理者ユーザーはis_adminがTrueの必要があります')
+        return self.create_user(email, password, **extra_fields)
+
+class User(AbstractUser):
+    username   = models.CharField(max_length=255, unique=True, verbose_name="ユーザー名", validators=[MinLengthValidator(3), MaxLengthValidator(14)])
     first_name = models.CharField(max_length=50, null=True, verbose_name="氏名1", validators=[MinLengthValidator(1), MaxLengthValidator(50)])
     last_name  = models.CharField(max_length=50, null=True, verbose_name="氏名2", validators=[MinLengthValidator(1), MaxLengthValidator(50)])
     password   = models.CharField(max_length=255, verbose_name="パスワード", validators=[check_password])
@@ -45,6 +52,8 @@ class User(models.Model):
         verbose_name_plural = "フロントユーザー"
 
 # INSERT beret_userimages (id,image,status,user_id,created_at,updated_at) VALUES (1,'702a05f3131249f3bbcfe65d25afafc7.jpg','E',1,'2020-01-01 00:00:00','2020-01-01 00:00:00');
+# select group_concat(table_name) from information_schema.tables where table_schema = 'beret' and table_name regexp 'beret_.*' \G
+
 class UserImages(models.Model):
     user       = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name="ユーザーid")
     image      = models.ImageField(max_length=255, blank=True, null=True, upload_to=get_image_path, validators=[FileExtensionValidator(['png', 'jpg', 'jpeg', 'webp'])], verbose_name="ユーザー画像")

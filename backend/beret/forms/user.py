@@ -18,7 +18,7 @@ class UserForm(forms.ModelForm):
         model = User
         # フィールドはすべてを利用
         fields = (
-            'name',
+            'username',
             'first_name',
             'last_name',
             'mail',
@@ -32,7 +32,7 @@ class UserForm(forms.ModelForm):
         )
         ##  右のように個別指定してもOK → fields = ["name"]
         widgets = {
-            'name': forms.TextInput(attrs={'class': INPUT_CLASSES, 'placeholder':'例）ユーザ名'}),
+            'username': forms.TextInput(attrs={'class': INPUT_CLASSES, 'placeholder':'例）ユーザ名'}),
             'first_name': forms.TextInput(attrs={'class': INPUT_CLASSES, 'placeholder':'例）ベレ田'}),
             'last_name': forms.TextInput(attrs={'class': INPUT_CLASSES, 'placeholder':'例）太郎'}),
             'mail': forms.TextInput(attrs={'class': INPUT_CLASSES}),

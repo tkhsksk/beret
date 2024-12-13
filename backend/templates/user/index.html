@@ -22,7 +22,7 @@
         <h2 class="mb-0.5 font-semibold">ユーザーアカウント管理</h2>
         <h3 class="text-sm font-medium text-slate-600">
           総ユーザー数：{{users|length}}<br />
-          最終登録ユーザー：{{latest.created_at}}：{{latest.name}}
+          最終登録ユーザー：{{latest.created_at}}：{{latest.username}}
         </h3>
       </div>
       <div>
@@ -89,7 +89,7 @@
                 <a
                   href="{% url 'user_edit' user.id %}"
                   class="font-medium text-violet-500 hover:text-violet-700"
-                  >{{user.name}}</a
+                  >{{user.username}}</a
                 >
               </td>
               <td class="p-3 font-medium text-slate-600">

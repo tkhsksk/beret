@@ -1,0 +1,25 @@
+{% for key, value in aside_menus.items %}
+<a
+  href="{% url value.url %}"
+  class="gap-2.5 rounded-lg px-2.5 py-1.5 text-sm group flex items-center
+  {% if value.match in request.path or value.match == 'home' and request.path == '/' %}
+  bg-gray-200 font-medium text-slate-950 dark:bg-slate-800/75 dark:text-white
+  {% else %}
+  font-medium text-slate-800 hover:bg-slate-100 active:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800/75 dark:active:text-white{% endif %}"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    class="{% if value.match in request.path or value.match == 'home' and request.path == '/' %}
+    hi-mini hi-cube inline-block size-5 text-slate-600
+    {% else %}
+    hi-mini hi-arrows-right-left inline-block size-5 text-slate-300 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300{% endif %}"
+    >
+    <path
+      d="M10.362 1.093a.75.75 0 0 0-.724 0L2.523 5.018 10 9.143l7.477-4.125-7.115-3.925ZM18 6.443l-7.25 4v8.25l6.862-3.786A.75.75 0 0 0 18 14.25V6.443ZM9.25 18.693v-8.25l-7.25-4v7.807a.75.75 0 0 0 .388.657l6.862 3.786Z"
+    />
+  </svg>
+  <span class="grow">{{ key }}</span>
+</a>
+{% endfor %}

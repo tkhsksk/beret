@@ -41,10 +41,10 @@ def create(request):
 
         # データが有効か確認
         if form.is_valid():
-            # user = form.save()
-            # user.set_password(user.password)
-            # user.save()
-            form.save()
+            user = form.save()
+            user.set_password(user.password)
+            user.save()
+            # form.save()
             return redirect('user_index')
 
     return render(request, "user/create.html", context)

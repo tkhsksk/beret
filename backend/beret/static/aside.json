@@ -1,0 +1,10 @@
+{
+    "ダッシュボード":{
+        "url":"home",
+        "match":"home"
+    },
+    "ユーザー":{
+        "url":"user_index",
+        "match":"user"
+    }
+}

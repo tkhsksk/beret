@@ -123,3 +123,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #pip install Pillow
 MEDIA_URL = 'upload/'
 MEDIA_ROOT = os.path.join(BASE_DIR.parent, 'upload')
+
+AUTH_USER_MODEL = 'beret.User'
+
+ACCOUNT_ADAPTER = 'beret.adapter.AccountAdapter'
