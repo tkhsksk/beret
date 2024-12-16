@@ -1,6 +1,7 @@
 .DS_Store
 __pycache__
 settings_dev.py
+backend/settings/settings.py
 
 # アプリが増えたら追加
 beret/migrations/*.py
